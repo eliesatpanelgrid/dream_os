@@ -133,6 +133,7 @@ function check_and_add_repositories() {
     fi
 }
 
+
 # Function to create feed configuration
 function _createFeedConf() {
     # Additional lines
@@ -223,22 +224,22 @@ function added_filter() {
 }
 
 function ostende() {
-    if [ "$archeck" = "arm64" ]; then
-        nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
-    elif [ "$archeck" = "armhf" ]; then
-        nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
-    elif [ "$archeck" = "mipsel" ]; then
-        nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
-    else
-        echo -e "\e[31mUnsupported architecture\e[0m"
-        exit 1
-    fi
+  if [ "$archeck" = "arm64" ]; then
+      nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
+  elif [ "$archeck" = "armhf" ]; then
+      nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
+  elif [ "$archeck" = "mipsel" ]; then
+      nobodycam="/etc/apt/sources.list.d/nobody-$archeck.list"
+  else
+      echo -e "\e[31mUnsupported architecture\e[0m"
+      exit 1
+  fi
 
-    if [ "$archeck" ]; then
-        wget -O "$nobodycam" "http://dreambox4u.com/dreamarabia/scripts/nobody-$archeck.list"
-        install_dreamarabia_feed
-        added_filter
-    fi
+  if [ "$archeck" ]; then
+      wget -O "$nobodycam" "http://dreambox4u.com/dreamarabia/scripts/nobody-$archeck.list"
+      install_dreamarabia_feed
+      added_filter
+  fi
 }
 
 # Function to install DreamArabia feed
@@ -264,7 +265,6 @@ function install_dreamarabia_feed() {
     fi
 }
 
-# Main Execution Flow
 if [ -f /etc/apt/sources.list ]; then
     # Check if feed.dreamboxtools.de exists in sources.list
     if grep -q "feed.dreamboxtools.de" /etc/apt/sources.list; then
@@ -285,38 +285,39 @@ if [ -f /etc/apt/sources.list ]; then
         sleep 2
         ostende
     else
-        echo -e "\e[34m#######################\n#######################\n#######################\n#    Wait Please  ...   #\n#  Creat feed config  #\n#######################\n#######################\n#######################\e[0m"
-        echo -e "\e[34mLet's try installing packages...\e[0m"
-        install_packagegroup_gemini_best
-        sleep 2
-        apt update
-        sleep 2
-        apt-get -y upgrade
-        sleep 5
-        install_dependencies
-        sleep 2
-        ostende
+      echo -e "\e[34m#######################\n#######################\n#######################\n#    Wait Please  ...   #\n#  Creat feed config  #\n#######################\n#######################\n#######################\e[0m"
+      echo -e "\e[34mLet's try installing packages...\e[0m"
+      install_packagegroup_gemini_best
+      sleep 2
+      apt update
+      sleep 2
+      apt-get -y upgrade
+      sleep 5
+      install_dependencies
+      sleep 2
+      ostende
     fi
 else
-    echo -e "\e[34m#######################\n#######################\n#######################\n#    Wait Please  ...   #\n#  Creat feed config  #\n#######################\n#######################\n#######################\e[0m"
-    echo -e "\e[34mLet's try installing packages...\e[0m"
-    install_packagegroup_gemini_best
-    sleep 2
-    apt update
-    sleep 2
-    apt-get -y upgrade
-    sleep 5
-    install_dependencies
-    sleep 2
-    ostende
+  echo -e "\e[34m#######################\n#######################\n#######################\n#    Wait Please  ...   #\n#  Creat feed config  #\n#######################\n#######################\n#######################\e[0m"
+  echo -e "\e[34mLet's try installing packages...\e[0m"
+  install_packagegroup_gemini_best
+  sleep 2
+  apt update
+  sleep 2
+  apt-get -y upgrade
+  sleep 5
+  install_dependencies
+  sleep 2
+  ostende
 fi
+
 
 # Check and remove chunk
 if [ -f /etc/apt/sources.list ]; then
-    if grep -q "merlinfeed.boxpirates.to" /etc/apt/sources.list; then
-        echo -e "\e[36mYou are using a Merlin image, let's clean duplicate lines\e[0m"
-        remove_chunk
-    fi
+  if grep -q "merlinfeed.boxpirates.to" /etc/apt/sources.list; then
+    echo -e "\e[36mYou are using a Merlin image, let's clean duplicate lines\e[0m"
+    remove_chunk
+  fi
 fi
 
 exit
