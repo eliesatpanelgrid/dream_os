@@ -1,5 +1,7 @@
 #!/bin/sh
 
+apt update && apt install -y wget curl
+
 # Define variables
 SESSIONID=$(curl -s -X POST "http://localhost/web/session" | grep -o -E "<e2sessionid>(.*)</e2sessionid>" | sed "s|.*<e2sessionid>\(.*\)</e2sessionid>.*|\1|")
 LANGUAGE=$(grep 'config.osd.language' /etc/enigma2/settings | cut -d'=' -f2)
